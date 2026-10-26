@@ -1,0 +1,14 @@
+<h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">{{ _("Invitations & Requests") }}</h1>
+<nav aria-label="{{ _('Invitation categories') }}"
+     class="flex gap-6 mb-6 border-b border-gray-200 dark:border-gray-700">
+  {% for category, label, href, hash in [('invitations', 'Invitations', '/invites', '#invites'), ('requests', 'Access Requests', url_for('signup.admin'), '#access-requests')] %}
+    <a href="{{ url_for('admin.dashboard') }}{{ hash }}"
+       hx-get="{{ href }}"
+       hx-target="#content"
+       hx-swap="innerHTML"
+       hx-push-url="{{ hash }}"
+       {% if active_category == category %}aria-current="page"{% endif %}
+       class="pb-3 border-b-2 font-medium
+              {% if active_category == category %}border-primary text-primary{% else %}border-transparent text-gray-600 dark:text-gray-400 hover:text-primary{% endif %}">{{ _(label) }}</a>
+  {% endfor %}
+</nav>

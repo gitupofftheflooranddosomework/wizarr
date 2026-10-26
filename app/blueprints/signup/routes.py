@@ -83,6 +83,8 @@ def submitted():
 @signup_bp.route("/admin/signups", methods=["GET", "POST"])
 @login_required
 def admin():
+    if request.method == "GET" and not request.headers.get("HX-Request"):
+        return redirect(url_for("admin.dashboard", _anchor="access-requests"))
     settings_form = SignupSettingsForm()
     if settings_form.validate_on_submit():
         row = Settings.query.filter_by(key="public_signup_enabled").first()

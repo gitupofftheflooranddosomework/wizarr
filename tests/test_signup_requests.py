@@ -240,7 +240,7 @@ def test_admin_view_escapes_user_input(admin_client, signup_setup):
         "<img src=x onerror=alert(1)>",
         "127.0.0.1",
     )
-    response = admin_client.get("/admin/signups")
+    response = admin_client.get("/admin/signups", headers={"HX-Request": "true"})
     assert response.status_code == 200
     assert b"&lt;script&gt;" in response.data
     assert b"<img src=x" not in response.data
@@ -255,3 +255,9 @@ def test_owner_email_failure_keeps_request(client, signup_setup):
             == 303
         )
     assert SignupRequest.query.one().status == "pending"
+
+
+def test_admin_requests_deep_link_uses_dashboard(admin_client):
+    response = admin_client.get("/admin/signups")
+    assert response.status_code == 302
+    assert response.location.endswith("/admin#access-requests")

@@ -1,13 +1,13 @@
-{% extends "base.html" %}
-{% block title %}{{ _("Access requests") }}{% endblock title %}
-{% block main %}
-  <main class="max-w-4xl mx-auto p-6 space-y-6 text-gray-900 dark:text-white">
-    <a href="{{ url_for('admin.dashboard') }}"
-       class="text-primary hover:underline">{{ _("Back to Wizarr") }}</a>
-    <h1 class="text-2xl font-bold">{{ _("Access requests") }}</h1>
+<section class="py-8 animate__animated animate__fadeIn animate__faster">
+  <div class="container px-4 mx-auto space-y-6 text-gray-900 dark:text-white">
+    {% with active_category="requests" %}
+      {% include "admin/invitation_navigation.html" %}
+    {% endwith %}
+    <h2 class="text-xl font-bold">{{ _("Access Requests") }}</h2>
     {% for category, message in get_flashed_messages(with_categories=true) %}<p role="status"
    class="p-3 rounded-lg border border-gray-300 dark:border-gray-700">{{ message }}</p>{% endfor %}
     <form method="post"
+          action="{{ url_for('signup.admin') }}"
           class="space-y-3 border-b border-gray-200 dark:border-gray-700 pb-6">
       {{ settings_form.hidden_tag() }}
       <label class="flex items-center gap-3">{{ settings_form.enabled() }} {{ settings_form.enabled.label.text }}</label>
@@ -57,8 +57,16 @@
       <p class="py-8 text-gray-500">{{ _("No requests yet. Share the public signup page to get started.") }}</p>
     {% endfor %}
     <nav class="flex justify-between text-primary">
-      {% if requests_page.has_prev %}<a href="{{ url_for('signup.admin', page=requests_page.prev_num) }}">{{ _("Previous") }}</a>{% endif %}
-      {% if requests_page.has_next %}<a href="{{ url_for('signup.admin', page=requests_page.next_num) }}">{{ _("Next") }}</a>{% endif %}
+      {% if requests_page.has_prev %}<a href="{{ url_for('signup.admin', page=requests_page.prev_num) }}"
+   hx-get="{{ url_for('signup.admin', page=requests_page.prev_num) }}"
+   hx-target="#content"
+   hx-swap="innerHTML"
+   hx-push-url="false">{{ _("Previous") }}</a>{% endif %}
+      {% if requests_page.has_next %}<a href="{{ url_for('signup.admin', page=requests_page.next_num) }}"
+   hx-get="{{ url_for('signup.admin', page=requests_page.next_num) }}"
+   hx-target="#content"
+   hx-swap="innerHTML"
+   hx-push-url="false">{{ _("Next") }}</a>{% endif %}
     </nav>
-  </main>
-{% endblock main %}
+  </div>
+</section>

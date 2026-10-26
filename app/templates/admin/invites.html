@@ -1,8 +1,11 @@
 <section class="py-8 animate__animated animate__fadeIn animate__faster">
   <div class="container px-4 mx-auto">
+    {% with active_category="invitations" %}
+      {% include "admin/invitation_navigation.html" %}
+    {% endwith %}
     <!-- Header with New Invite button -->
     <div class="flex justify-between items-center mb-6">
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ _("Invitations") }}</h1>
+      <h2 class="text-xl font-bold text-gray-900 dark:text-white">{{ _("Invitations") }}</h2>
       <button id="newInviteBtn"
               class="bg-primary hover:bg-primary_hover text-white font-medium px-6 py-3 rounded-lg shadow-lg transition-all duration-200 flex items-center gap-2"
               onclick="openInviteModal()">
